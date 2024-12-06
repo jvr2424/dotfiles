@@ -87,9 +87,12 @@ source <(fzf --zsh)
 export BUN_INSTALL="$HOME/.reflex/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+#tmux
+source "/Users/joeracaniello/.scripts/tmux_on_start.sh"
 
 #aliases
 alias dotgit="git --git-dir=$HOME/dotfiles/ --work-tree=$HOME"
 alias ls="ls -alht --color=auto"
 alias ocode="fd . ~/Documents/Projects --type d | fzf | xargs -I {} code {}"
-alias cdc='cd $(fd . ~/Documents/Projects --type d |fzf) && code .'
+alias cdd='cd $(fd . ~/Documents/Projects --type d |fzf)'
+alias cdc='cdd && code .'
