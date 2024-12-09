@@ -71,14 +71,17 @@ _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
+#fzf
+source <(fzf --zsh)
 
 export NVM_DIR="$HOME/.reflex/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-#fzf
-source <(fzf --zsh)
 
+#git completion?
+autoload -Uz compinit && compinit
+fpath=(~/.zsh $fpath)
 
 # bun completions
 [ -s "/Users/joeracaniello/.reflex/.bun/_bun" ] && source "/Users/joeracaniello/.reflex/.bun/_bun"

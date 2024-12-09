@@ -1,0 +1,62 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "ctrl+shift+h",
+        "command": "workbench.action.navigateLeft"
+    },
+    {
+        "key": "ctrl+shift+l",
+        "command": "workbench.action.navigateRight"
+    },
+    {
+        "key": "ctrl+shift+k",
+        "command": "workbench.action.navigateUp"
+    },
+    {
+        "key": "ctrl+shift+j",
+        "command": "workbench.action.navigateDown"
+    },
+    {
+        "key": "a",
+        "command": "explorer.newFile",
+        "when": "filesExplorerFocus && !inputFocus"
+    },
+    {
+        "key": "shift+a",
+        "command": "explorer.newFolder",
+        "when": "filesExplorerFocus && !inputFocus"
+    },
+    {
+        "key": "d d",
+        "command": "moveFileToTrash",
+        "when": "explorerResourceMoveableToTrash && filesExplorerFocus && foldersViewVisible && !explorerResourceReadonly && !inputFocus"
+    },
+    {
+        "key": "c c",
+        "command": "renameFile",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !inputFocus"
+    },
+    {
+        "key": "y y",
+        "command": "copyRelativeFilePath",
+        "when": "filesExplorerFocus && !inputFocus"
+    },
+    {
+        "key": "shift+y shift+y",
+        "command": "copyFilePath",
+        "when": "filesExplorerFocus && !inputFocus"
+    },
+    {
+        "key": "ctrl+shift+o",
+        "command": "workbench.action.increaseViewSize",
+    },
+    {
+        "key": "ctrl+shift+i",
+        "command": "workbench.action.decreaseViewSize",
+    },
+    {
+        "key": "z z",
+        "command": "workbench.action.decreaseViewSize",
+        "when": "notebookEditorFocused && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIDExclusions'"
+    },
+]

@@ -62,3 +62,9 @@ vim.api.nvim_set_keymap("n", "<leader>t", "<cmd>lua thousands_sep_comma()<CR>", 
 vim.api.nvim_set_keymap("n", "<leader>T", "<cmd>lua thousands_sep_underscore()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<leader>f", ":lua wrap_in_fstring_std()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<leader>F", ":lua wrap_in_fstring_equal()<CR>", { noremap = true, silent = true })
+
+-- highlight and drag
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")

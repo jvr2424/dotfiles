@@ -10,6 +10,15 @@ return {
 	      vim.cmd([[colorscheme tokyonight]])
 	    end,
 	  },
+    {
+        'echasnovski/mini.pairs',
+        version = false ,
+          config = function()
+            require("mini.pairs").setup()
+            -- ... and there is more!
+            --  Check out: https://github.com/echasnovski/mini.nvim
+          end,
+    },
 	{
 	  "epwalsh/obsidian.nvim",
 	  version = "*",  -- recommended, use latest release instead of latest commit

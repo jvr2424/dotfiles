@@ -1,0 +1,51 @@
+{
+    "[python]": {
+        "editor.formatOnType": true,
+      "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+    "jupyter.askForKernelRestart": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.lineNumbers": "relative",
+    "tailwindCSS.includeLanguages": {
+        "html": "html",
+        "javascript": "javascript",
+        "css": "css"
+    },
+    "tailwindCSS.emmetCompletions": true,
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "css.enabledLanguages": [
+        "html"
+    ],
+    "inlineSQL.lintSQLFiles": true,
+    "files.associations": {
+        "*.jinja": "html"
+    },
+    "vim.useSystemClipboard": true,
+    "notebook.lineNumbers": "on",
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "ruff.lint.args": [
+        "--config=/Users/joeracaniello/.config/ruff/pyproject.toml"
+    ],
+    "ruff.format.args": [
+        "--config=/Users/joeracaniello/.config/ruff/pyproject.toml"
+    ],
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "notebook.formatOnSave.enabled": true,
+    "notebook.codeActionsOnSave": {
+      "notebook.source.fixAll": "explicit",
+      "notebook.source.organizeImports": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[svelte]": {
+        "editor.defaultFormatter": "svelte.svelte-vscode"
+    },
+    "svelte.enable-ts-plugin": true,
+    "editor.acceptSuggestionOnEnter": "off"
+}
