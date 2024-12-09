@@ -1,112 +1,175 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+end
+
+vim.opt.rtp:prepend(lazypath)
+vim.g.mapleader = " "
+
+vim.g.have_nerd_font = false
+vim.opt.clipboard = "unnamedplus"
+vim.opt.hlsearch = true
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+
+vim.opt.nu = true
+vim.opt.relativenumber = true
+
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
+vim.opt.smartindent = true
+
+vim.opt.wrap = false
+
+-- keymaps
+require("config.keymaps")
+
+
+-- autocmds
+vim.api.nvim_create_autocmd("TextYankPost", {
+  desc = "Highlight when yanking (copying) text",
+  group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
+
+
+--plugins
+-- require("config.base_plugins")
+
+--vs code vs regular neovim
 if vim.g.vscode then
   -- VSCode extension
-  vim.g.mapleader = " "
-  vim.g.have_nerd_font = false
-  vim.opt.clipboard = "unnamedplus"
-  vim.opt.hlsearch = true
-
-  vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+require("lazy").setup({
+  spec = {
+    { import = "config.base_plugins" },
+  },
+  defaults = {
+    lazy = false,
+    version = false, -- always use the latest git commit
+    -- version = "*", -- try installing the latest stable version for plugins that support semver
+  },
+  checker = { enabled = false },
+})
   vim.keymap.set("n", "gj", "<cmd>lua require('vscode').action('editor.action.marker.next')<CR>")
   vim.keymap.set("n", "gk", "<cmd>lua require('vscode').action('editor.action.marker.prev')<CR>")
 
-  vim.api.nvim_create_autocmd("TextYankPost", {
-    desc = "Highlight when yanking (copying) text",
-    group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-    callback = function()
-      vim.highlight.on_yank()
-    end,
-  })
-
-  -- [[ Install `lazy.nvim` plugin manager ]]
-  --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
-  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-  if not (vim.uv or vim.loop).fs_stat(lazypath) then
-    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-    vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  end ---@diagnostic disable-next-line: undefined-field
-  vim.opt.rtp:prepend(lazypath)
-  --
-  -- NOTE: Here is where you install your plugins.
-  require("lazy").setup({
-    -- "gc" to comment visual regions/lines
-    { "numToStr/Comment.nvim", opts = {} },
-    { -- Collection of various small independent plugins/modules
-      "echasnovski/mini.nvim",
-      config = function()
-        require("mini.surround").setup()
-        -- ... and there is more!
-        --  Check out: https://github.com/echasnovski/mini.nvim
-      end,
-    },
-  })
 else
   -- ordinary Neovim
-  require("config.lazy")
+require("lazy").setup({
+  spec = {
+    { import = "config.base_plugins" },
+    { import = "config.nvim_only_plugins" },
+  },
+  defaults = {
+    lazy = false,
+    version = false, -- always use the latest git commit
+    -- version = "*", -- try installing the latest stable version for plugins that support semver
+  },
+  install = { colorscheme = { "tokyonight"} },
+  checker = { enabled = true },
+})
+    -- Reserve a space in the gutter
+    -- This will avoid an annoying layout shift in the screen
+    vim.opt.signcolumn = 'yes'
+
+    -- Add cmp_nvim_lsp capabilities settings to lspconfig
+    -- This should be executed before you configure any language server
+    local lspconfig_defaults = require('lspconfig').util.default_config
+    lspconfig_defaults.capabilities = vim.tbl_deep_extend(
+      'force',
+      lspconfig_defaults.capabilities,
+      require('cmp_nvim_lsp').default_capabilities()
+    )
+
+    -- This is where you enable features that only work
+    -- if there is a language server active in the file
+    vim.api.nvim_create_autocmd('LspAttach', {
+      desc = 'LSP actions',
+      callback = function(event)
+        local opts = {buffer = event.buf}
+
+        vim.keymap.set('n', 'gh', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
+        vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+        vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
+        vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
+        vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
+        vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
+        vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
+        vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
+        vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
+        vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+      end,
+	})
+    require('mason').setup({})
+    require('mason-lspconfig').setup({
+      handlers = {
+        function(server_name)
+          require('lspconfig')[server_name].setup({})
+        end,
+      },
+    })
+    local cmp = require('cmp')
+
+    cmp.setup({
+      sources = {
+        {name = 'nvim_lsp'},
+      },
+      mapping = cmp.mapping.preset.insert({
+        -- Navigate between completion items
+        ['<C-p>'] = cmp.mapping.select_prev_item({behavior = 'select'}),
+        ['<C-n>'] = cmp.mapping.select_next_item({behavior = 'select'}),
+
+        -- `Enter` key to confirm completion
+        ['<TAB>'] = cmp.mapping.confirm({select = false}),
+
+        -- Ctrl+Space to trigger completion menu
+        ['<C-Space>'] = cmp.mapping.complete(),
+
+        -- Scroll up and down in the completion documentation
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
+      }),
+      snippet = {
+        expand = function(args)
+          vim.snippet.expand(args.body)
+        end,
+      },
+    })
+    require'nvim-treesitter.configs'.setup {
+      -- A list of parser names, or "all" (the listed parsers MUST always be installed)
+      ensure_installed = {
+          "lua",
+          "vim",
+          "markdown",
+          "markdown_inline",
+          "html",
+          "python",
+          "javascript",
+          "css",
+          "bash",
+          "toml",
+      },
+
+      sync_install = false,
+      -- Automatically install missing parsers when entering buffer
+      -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+      auto_install = true,
+
+      highlight = {
+        enable = true,
+        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+        -- Using this option may slow down your editor, and you may see some duplicate highlights.
+        -- Instead of true it can also be a list of languages
+        additional_vim_regex_highlighting = false,
+      },
+    }
 end
 
-_G.thousands_sep = function(separator)
-  separator = separator or ","
-
-  local line = vim.api.nvim_get_current_line()
-
-  local reversed_line = string.reverse(line)
-
-  local pattern = "(%d%d%d)"
-  local with_separators = reversed_line:gsub(pattern, "%1" .. separator)
-
-  if #line % 3 == 0 then
-    with_separators = with_separators:sub(1, -2)
-  end
-
-  with_separators = string.reverse(with_separators)
-
-  vim.api.nvim_set_current_line(with_separators)
-end
-
-_G.thousands_sep_comma = function()
-  _G.thousands_sep(",")
-end
-
-_G.thousands_sep_underscore = function()
-  _G.thousands_sep("_")
-end
-
-_G.wrap_in_fstring = function(add_equal)
-  local start_pos = vim.fn.getpos("'<")
-  local end_pos = vim.fn.getpos("'>")
-
-  -- retrieve the line and process the selected portion
-  local line = vim.fn.getline(start_pos[2])
-  local pre_selection = string.sub(line, 1, start_pos[3] - 1)
-  local post_selection = string.sub(line, end_pos[3] + 1)
-
-  local selected_text = string.sub(line, start_pos[3], end_pos[3])
-
-  -- construct the f string
-  local f_string
-  if add_equal then
-    f_string = 'f"{' .. selected_text .. '=}"'
-  else
-    f_string = 'f"{' .. selected_text .. '}"'
-  end
-
-  -- combine everything and replace the line
-  local new_line = pre_selection .. f_string .. post_selection
-  vim.fn.setline(start_pos[2], new_line)
-end
-
-_G.wrap_in_fstring_std = function()
-  _G.wrap_in_fstring(false)
-end
-
-_G.wrap_in_fstring_equal = function()
-  _G.wrap_in_fstring(true)
-end
-
--- Map the function to key combos
-vim.api.nvim_set_keymap("n", "<leader>t", "<cmd>lua thousands_sep_comma()<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>T", "<cmd>lua thousands_sep_underscore()<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "<leader>f", ":lua wrap_in_fstring_std()<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "<leader>F", ":lua wrap_in_fstring_equal()<CR>", { noremap = true, silent = true })
