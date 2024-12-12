@@ -6,6 +6,18 @@
 
 # if mac proceed
 
+# Default to normal stow
+ADOPT_MODE=false
+
+# Parse command line arguments
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --adopt) ADOPT_MODE=true ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
 # Set the dotfiles directory
 DOTFILES_DIR="$HOME/.dotfiles"
 
@@ -21,16 +33,26 @@ for dir in */; do
     [ -d "$dir" ] || continue
     
     # Skip common version control and system directories
-    if [[ "$dir" == ".git" || "$dir" == ".github" || "$dir" == ".gitignore" ]]; then
+    if [[ "$dir" == ".git" ]]; then
         continue
     fi
     
     # Print which directory is being stowed
-    echo "Stowing $dir..."
     
     # Run stow command
     # -R to restow (overwrite existing symlinks)
-    stow -R "$dir"
+    # --adopt --> pulls the system files into this repo
+    if [ "$ADOPT_MODE" = true ]; then
+        # --adopt moves existing files into the stow directory and creates symlinks
+        echo "Using adopt mode for $dir"
+        stow -R --adopt "$dir"
+        
+    else
+        # Normal restow
+        echo "Stowing $dir..."
+        stow -R "$dir"
+    fi
+
 done
 
 echo "Dotfiles stow complete!"
