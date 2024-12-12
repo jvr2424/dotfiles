@@ -1,0 +1,15 @@
+common:
+  - neovim
+  - fzf
+  - fd
+  - ripgrep
+  - tmux
+
+mac:
+  - bash
+  - git
+  - bash-completions@2
+  - aerospace
+
+ubuntu:
+  - build-essential
