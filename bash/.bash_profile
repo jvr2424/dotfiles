@@ -2,23 +2,11 @@
 test -f ~/.profile && . ~/.profile
 
 export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-. "$HOME/.cargo/env"
-
-
-# if [ -f ~/.scripts/.git_completion.bash ]; then
-#   source ~/.scripts/.git_completion.bash
-# fi
-#  HOMEBREW_PREFIX="$(brew --prefix)"
-# [[ -r "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh" ]] && . "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh"
-
-# for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*
-#     # echo "$COMPLETION"
-#     do
-#       [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
-#     done
+eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(fzf --bash)"
 
 if type brew &>/dev/null
 then
@@ -32,11 +20,10 @@ then
       [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
     done
   fi
+    source  "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-prompt.sh"
+    source  "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-completion.bash"
+else
+    echo "brew not in path?"
 fi
-source  "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-prompt.sh"
-source  "${HOMEBREW_PREFIX}/etc/bash_completion.d/git-completion.bash"
-
-
-
 
 test -f ~/.bashrc && . ~/.bashrc

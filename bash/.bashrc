@@ -68,12 +68,6 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 export JAVA_HOME=$(/usr/libexec/java_home)
 export GIT_EDITOR=nvim
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-eval "$(/opt/homebrew/bin/brew shellenv)"
-eval "$(fzf --bash)"
 
 #tmux
 source "$HOME/.scripts/tmux_on_start.sh"

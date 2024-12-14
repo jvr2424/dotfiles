@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-local session_name="default"
+session_name="default"
 
 if tmux has-session -t $session_name 2>/dev/null; then
     if [ -z "$TMUX" ]; then
