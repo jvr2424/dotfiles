@@ -1,51 +1,44 @@
 {
-    "[python]": {
-        "editor.formatOnType": true,
-      "editor.defaultFormatter": "charliermarsh.ruff"
-    },
-    "jupyter.askForKernelRestart": false,
-    "security.workspace.trust.untrustedFiles": "open",
-    "editor.lineNumbers": "relative",
-    "tailwindCSS.includeLanguages": {
-        "html": "html",
-        "javascript": "javascript",
-        "css": "css"
-    },
-    "tailwindCSS.emmetCompletions": true,
-    "editor.quickSuggestions": {
-        "strings": true
-    },
-    "css.enabledLanguages": [
-        "html"
-    ],
-    "inlineSQL.lintSQLFiles": true,
-    "files.associations": {
-        "*.jinja": "html"
-    },
     "vim.useSystemClipboard": true,
-    "notebook.lineNumbers": "on",
+    "vim.handleKeys": {
+        "<C-p>": false,
+        "<C-w>": false
+    },
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
     },
-    "ruff.lint.args": [
-        "--config=/Users/joeracaniello/.config/ruff/pyproject.toml"
+    "security.workspace.trust.untrustedFiles": "open",
+    "jupyter.askForKernelRestart": false,
+    "security.allowedUNCHosts": [
+        "wsl.localhost"
     ],
-    "ruff.format.args": [
-        "--config=/Users/joeracaniello/.config/ruff/pyproject.toml"
+    "window.commandCenter": false,
+    "jupyter.widgetScriptSources": [
+        "jsdelivr.com",
+        "unpkg.com"
     ],
+    "notebook.diff.ignoreOutputs": true,
+    "notebook.diff.ignoreMetadata": true,
+    // Enable formatting the entire Notebook on save
+      "notebook.formatOnCellExecution": true,
+      // Run the enabled code actions on the entire Notebook on save
     "editor.defaultFormatter": "charliermarsh.ruff",
-    "notebook.formatOnSave.enabled": true,
-    "notebook.codeActionsOnSave": {
-      "notebook.source.fixAll": "explicit",
-      "notebook.source.organizeImports": "explicit"
-    },
     "editor.formatOnSave": true,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "interactiveWindow.executeWithShiftEnter": true,
     "[html]": {
         "editor.defaultFormatter": "vscode.html-language-features"
     },
-    "[svelte]": {
-        "editor.defaultFormatter": "svelte.svelte-vscode"
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
     },
-    "svelte.enable-ts-plugin": true,
-    "editor.acceptSuggestionOnEnter": "off"
+    "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+    "ruff.nativeServer": "on",
+    "python.analysis.nodeExecutable": "/opt/homebrew/bin/node",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "notebook.lineNumbers": "on",
+    "editor.lineNumbers": "relative",
+    "editor.acceptSuggestionOnEnter": "off",
 }

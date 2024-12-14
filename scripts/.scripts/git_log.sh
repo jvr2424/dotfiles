@@ -1,0 +1,1 @@
+git log --graph --format='%C(auto)%h%d %s %C(white) %b %C(bold)%cr' --color=always | fzf --ansi --reverse --tiebreak=index --no-sort --bind=ctrl-s:toggle-sort --preview 'f() { set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}"); [ $# -eq 0 ] || git show --color=always $1; }; f {}'

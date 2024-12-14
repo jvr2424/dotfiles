@@ -113,28 +113,29 @@ alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands.html#move-node-to-workspace
-alt-shift-1 = [ 'move-node-to-workspace 1', 'workspace 1' ]
-alt-shift-2 = [ 'move-node-to-workspace 2', 'workspace 2' ]
-alt-shift-3 = [ 'move-node-to-workspace 3', 'workspace 3' ]
-alt-shift-4 = [ 'move-node-to-workspace 4', 'workspace 4' ]
-alt-shift-5 = [ 'move-node-to-workspace 5', 'workspace 5' ]
-alt-shift-6 = [ 'move-node-to-workspace 6', 'workspace 6' ]
-alt-shift-7 = [ 'move-node-to-workspace 7', 'workspace 7' ]
-alt-shift-8 = [ 'move-node-to-workspace 8', 'workspace 8' ]
-alt-shift-9 = [ 'move-node-to-workspace 9', 'workspace 9' ]
+alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
+alt-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
+alt-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
+alt-shift-4 = ['move-node-to-workspace 4', 'workspace 4']
+alt-shift-5 = ['move-node-to-workspace 5', 'workspace 5']
+alt-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
+alt-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
+alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
+alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
 
 # See: https://nikitabobko.github.io/AeroSpace/commands.html#layout
+# alt-v = 'layout vertical'
+# alt-shift-v = 'layout horizontal'
 alt-v = 'split vertical'
 alt-shift-v = 'split horizontal'
-alt-s = 'layout v_accordion'
-alt-w = 'layout h_accordion'
-alt-e = 'layout tiles horizontal vertical'
+alt-s = 'layout v_accordion' # 'layout stacking' in i3
+alt-w = 'layout h_accordion' # 'layout tabbed' in i3
+alt-e = 'layout tiles horizontal vertical' # 'layout toggle split' in i3
 alt-shift-space = 'layout floating tiling'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands.html#fullscreen
 alt-x = 'fullscreen'
-alt-shift-x = 'macos-native-fullscreen'
-# alt-shift-m = 'macos-native-fullscreen off'
+alt-shift-x ='macos-native-fullscreen'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands.html#close
 alt-shift-q = 'close'
@@ -149,19 +150,30 @@ alt-shift-r = 'reload-config'
 # join mode
 alt-shift-slash = 'mode join'
 
-# service mode
+# See: https://nikitabobko.github.io/AeroSpace/commands.html#mode
 alt-shift-semicolon = 'mode service'
 
 [[on-window-detected]]
-if.app-id = 'com.apple.MobileSMS'
+if.app-id = 'com.microsoft.teams'
+# if.app-name-regex-substring = 'microsoft teams'
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
-if.app-id = 'com.apple.mail'
+if.app-id = 'com.microsoft.teams2'
 run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
+run = 'move-node-to-workspace 1'
+
 
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+# if.app-id = 'md.obsidian'
+if.app-id = 'com.electron.logseq'
 run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
@@ -169,11 +181,11 @@ if.app-id = 'com.microsoft.VSCode'
 run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
-if.app-id = 'com.apple.dt.Xcode'
-run = 'move-node-to-workspace 3'
+if.app-id = 'com.apple.Safari'
+run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
-if.app-id = 'com.apple.Safari'
+if.app-id = 'com.google.Chrome'
 run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
@@ -184,17 +196,14 @@ run = 'move-node-to-workspace 5'
 if.app-id = 'com.apple.finder'
 run = 'move-node-to-workspace 5'
 
-[[on-window-detected]]
-if.app-id = 'me.mssun.passforios'
-run = 'move-node-to-workspace 6'
+# [[on-window-detected]]
+# if.app-id = 'me.mssun.passforios'
+# run = 'move-node-to-workspace 6'
 
 
 # See: https://nikitabobko.github.io/AeroSpace/commands.html#workspace-back-and-forth
 # alt-tab = 'workspace-back-and-forth'
 
-# See: https://nikitabobko.github.io/AeroSpace/commands.html#mode
-# alt-shift-semicolon = 'mode service'
-# alt-shift-slash = 'mode join'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide.html#binding-modes
@@ -203,7 +212,8 @@ r = ['flatten-workspace-tree', 'mode main'] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 # f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
 #backspace = ['close-all-windows-but-current', 'mode main']
-esc = ['reload-config', 'mode main']
+# esc = ['reload-config', 'mode main']
+
 
 # 'join' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide.html#binding-modes

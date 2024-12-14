@@ -1,1 +1,3 @@
 tmux_start_paths.txt
+.DS_Store
+.env

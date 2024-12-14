@@ -1,5 +1,6 @@
-// Place your key bindings in this file to override the defaults
+// Place your key bindings in this file to override the defaultsauto[]
 [
+
     {
         "key": "ctrl+shift+h",
         "command": "workbench.action.navigateLeft"
@@ -34,7 +35,7 @@
     {
         "key": "c c",
         "command": "renameFile",
-        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !inputFocus"
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
     },
     {
         "key": "y y",
@@ -48,15 +49,15 @@
     },
     {
         "key": "ctrl+shift+o",
-        "command": "workbench.action.increaseViewSize",
+        "command": "workbench.action.increaseViewSize"
     },
     {
         "key": "ctrl+shift+i",
-        "command": "workbench.action.decreaseViewSize",
+        "command": "workbench.action.decreaseViewSize"
     },
     {
         "key": "z z",
-        "command": "workbench.action.decreaseViewSize",
-        "when": "notebookEditorFocused && neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIDExclusions'"
-    },
+        "command": "notebook.centerActiveCell",
+        "when": "notebookEditorFocused &&  neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+    }
 ]
