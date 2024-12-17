@@ -61,9 +61,9 @@ _fzf_compgen_dir() {
 }
 
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-export SSL_CERT_FILE=/etc/ssl/certs/ca-bundle-full.crt
-export AWS_CA_BUNDLE=/etc/ssl/certs/ca-bundle-full.crt
-export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle-full.crt
+# export SSL_CERT_FILE=/etc/ssl/certs/ca-bundle-full.crt
+# export AWS_CA_BUNDLE=/etc/ssl/certs/ca-bundle-full.crt
+# export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle-full.crt
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export JAVA_HOME=$(/usr/libexec/java_home)
 export GIT_EDITOR=nvim
