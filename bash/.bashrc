@@ -91,6 +91,8 @@ alias gitopr="get_git_pr_search_url | xargs open"
 alias gitobr="get_git_branch_url | xargs open"
 alias gitl="source ~/.scripts/git_log.sh"
 
-alias ls="ls -alht --color=auto"
+alias ls="ls  --color=auto"
+alias ll="ls -lh --color=auto"
+alias lt="ls -lht --color=auto"
 
 . "$HOME/.cargo/env"
