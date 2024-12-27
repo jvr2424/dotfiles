@@ -59,5 +59,17 @@
         "key": "z z",
         "command": "notebook.centerActiveCell",
         "when": "notebookEditorFocused &&  neovim.init && neovim.mode != 'insert' && editorLangId not in 'neovim.editorLangIdExclusions'"
+    },
+    {
+        "key": "ctrl+shift+0",
+        "command": "jupyter.restartkernel"
+    },
+    {
+        "key": "ctrl+shift+c",
+        "command": "notebook.clearAllCellsOutputs"
+    },
+    {
+        "key": "ctrl+shift+y",
+        "command": "notebook.cellOutput.copy"
     }
 ]
