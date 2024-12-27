@@ -44,7 +44,7 @@ function set_bash_prompt() {
   set_virtualenv
 
 
-  export PS1="${VENV}${GREEN}\u\[${YELLOW}\]\w\[${BLUE}\]$(__git_ps1)${COLOR_NONE}\n${PROMPT_SYMBOL} "
+  export PS1="${VENV}${GREEN}\u@\h:\[${YELLOW}\]\w\[${BLUE}\]$(__git_ps1)${COLOR_NONE}\n${PROMPT_SYMBOL} "
 }
 
 PROMPT_COMMAND=set_bash_prompt
@@ -75,6 +75,7 @@ source "$HOME/.scripts/tmux_on_start.sh"
 # custom script for opeing git remote and pr
 source "$HOME/.scripts/git_open_remote.sh"
 
+alias fd="$(which fdfind)"
 alias ocode="fd . ~/Local_Projects --type d | fzf | xargs -I {} code {}"
 alias cdd='cd $(fd . ~/Local_Projects --type d | fzf)'
 alias cdc='cdd && code .'
@@ -95,4 +96,4 @@ alias ls="ls  --color=auto"
 alias ll="ls -lh --color=auto"
 alias lt="ls -lht --color=auto"
 
-. "$HOME/.cargo/env"
+# . "$HOME/.cargo/env"

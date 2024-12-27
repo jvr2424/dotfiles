@@ -13,3 +13,8 @@ mac:
 
 ubuntu:
   - build-essential
+  - fd-find
+    # make an alias fd="$(which fdfind)"
+    # or
+    # run this command to use it like other systems
+    # `ln -s $(which fdfind) ~/.local/bin/fd`
