@@ -44,7 +44,7 @@ function set_bash_prompt() {
   set_virtualenv
 
 
-  export PS1="${VENV}${GREEN}\u@\h:\[${YELLOW}\]\w\[${BLUE}\]$(__git_ps1)${COLOR_NONE}\n${PROMPT_SYMBOL} "
+  export PS1="${VENV}${GREEN}\u${ORANGE_DARK}@\h:\[${YELLOW}\]\w\[${BLUE}\]$(__git_ps1)${COLOR_NONE}\n${PROMPT_SYMBOL} "
 }
 
 PROMPT_COMMAND=set_bash_prompt
