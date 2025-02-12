@@ -1,5 +1,6 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -57,8 +58,11 @@ require("lazy").setup({
   },
   checker = { enabled = false },
 })
-  vim.keymap.set("n", "gj", "<cmd>lua require('vscode').action('editor.action.marker.next')<CR>")
-  vim.keymap.set("n", "gk", "<cmd>lua require('vscode').action('editor.action.marker.prev')<CR>")
+  vim.keymap.set("n", "<leader>j", "<cmd>lua require('vscode').action('editor.action.marker.next')<CR>")
+  vim.keymap.set("n", "<leader>k", "<cmd>lua require('vscode').action('editor.action.marker.prev')<CR>")
+  vim.keymap.set("n", "<leader>s", "<cmd>lua require('vscode').action('cSpell.suggestSpellingCorrections')<CR>")
+  vim.keymap.set("n", "<leader>gn", "<cmd>lua require('vscode').action('workbench.action.editor.nextChange')<CR>")
+  vim.keymap.set("n", "<leader>gp", "<cmd>lua require('vscode').action('workbench.action.editor.previousChange')<CR>")
 
 else
   -- ordinary Neovim
@@ -78,6 +82,8 @@ require("lazy").setup({
     -- Reserve a space in the gutter
     -- This will avoid an annoying layout shift in the screen
     vim.opt.signcolumn = 'yes'
+
+
 
     -- Add cmp_nvim_lsp capabilities settings to lspconfig
     -- This should be executed before you configure any language server
@@ -115,8 +121,9 @@ require("lazy").setup({
         end,
       },
     })
-    local cmp = require('cmp')
+    require('mini.snippets').setup()
 
+    local cmp = require('cmp')
     cmp.setup({
       sources = {
         {name = 'nvim_lsp'},
@@ -127,7 +134,18 @@ require("lazy").setup({
         ['<C-n>'] = cmp.mapping.select_next_item({behavior = 'select'}),
 
         -- `Enter` key to confirm completion
-        ['<TAB>'] = cmp.mapping.confirm({select = false}),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+              -- This little snippet will confirm with tab, and if no entry is selected, will confirm the first item
+              if cmp.visible() then
+                local entry = cmp.get_selected_entry()
+                if not entry then
+                  cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                end
+                cmp.confirm()
+              else
+                fallback()
+              end
+            end, {"i","s","c",}),
 
         -- Ctrl+Space to trigger completion menu
         ['<C-Space>'] = cmp.mapping.complete(),
@@ -136,12 +154,18 @@ require("lazy").setup({
         ['<C-u>'] = cmp.mapping.scroll_docs(-4),
         ['<C-d>'] = cmp.mapping.scroll_docs(4),
       }),
-      snippet = {
-        expand = function(args)
-          vim.snippet.expand(args.body)
-        end,
-      },
+    snippet = {
+          -- REQUIRED - you must specify a snippet engine
+          expand = function(args)
+            -- For `mini.snippets` users:
+            local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
+            insert({ body = args.body }) -- Insert at cursor
+            cmp.resubscribe({ "TextChangedI", "TextChangedP" })
+            require("cmp.config").set_onetime({ sources = {} })
+          end,
+        },
     })
+
     require'nvim-treesitter.configs'.setup {
       -- A list of parser names, or "all" (the listed parsers MUST always be installed)
       ensure_installed = {

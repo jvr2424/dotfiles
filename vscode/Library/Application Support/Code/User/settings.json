@@ -41,4 +41,7 @@
     "notebook.lineNumbers": "on",
     "editor.lineNumbers": "relative",
     "editor.acceptSuggestionOnEnter": "off",
+    "cSpell.enabledFileTypes": {
+        "*": false
+    },
 }
