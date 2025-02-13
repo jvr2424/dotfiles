@@ -90,7 +90,6 @@ alias gitor="get_git_remote_url | xargs open"
 alias gitopr="get_git_pr_search_url | xargs open"
 alias gitobr="get_git_branch_url | xargs open"
 alias gitl="source ~/.scripts/git_log.sh"
-alias attic_export="python /Users/jracaniell/Local_Projects/_side_projects/attic_export_cli/run_attic_export.py"
 
 alias ls="ls  --color=auto"
 alias ll="ls -lh --color=auto"
