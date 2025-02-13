@@ -64,11 +64,41 @@ return {
         -- event = { "LazyFile", "VeryLazy" },
     },
     {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
-      dependencies = {
-          'nvim-lua/plenary.nvim',
-        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
-      },
+        'ThePrimeagen/harpoon',
+        version = false,
+        config = function()
+            require("harpoon").setup()
+
+            vim.keymap.set("n", "<leader>hx", require("harpoon.mark").add_file)
+            vim.keymap.set("n", "<leader>hn", require("harpoon.ui").nav_next)
+            vim.keymap.set("n", "<leader>hp", require("harpoon.ui").nav_prev)
+
+            vim.keymap.set("n", "<leader>hj", function() require("harpoon.ui").nav_file(1) end)
+            vim.keymap.set("n", "<leader>hk", function() require("harpoon.ui").nav_file(2) end)
+            vim.keymap.set("n", "<leader>hl", function() require("harpoon.ui").nav_file(3) end)
+            vim.keymap.set("n", "<leader>h;", function() require("harpoon.ui").nav_file(4) end)
+
+            -- vim.keymap.set("n", "<leader>hm", "<cmd>Telescope harpoon marks<CR>")
+            vim.keymap.set("n", "<leader>hm", require("harpoon.ui").toggle_quick_menu)
+
+            -- vim.keymap.set("n", "<C-h>", function() require("harpoon").list().select(1) end)
+            -- vim.keymap.set("n", "<C-t>", function() require("harpoon").list().select(2) end)
+            -- vim.keymap.set("n", "<C-n>", function() require("harpoon").list().select(3) end)
+            -- vim.keymap.set("n", "<C-s>", function() require("harpoon").list().select(4) end)
+            -- vim.keymap.set("n", "<leader><C-h>", function() require("harpoon").list().replace_at(1) end)
+            -- vim.keymap.set("n", "<leader><C-t>", function() require("harpoon").list().replace_at(2) end)
+            -- vim.keymap.set("n", "<leader><C-n>", function() require("harpoon").list().replace_at(3) end)
+            -- vim.keymap.set("n", "<leader><C-s>", function() require("harpoon").list().replace_at(4) end)
+        end,
+
+    },
+    {
+        'nvim-telescope/telescope.nvim',
+        tag = '0.1.8',
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
+        },
         config = function()
             require('telescope').setup {
                 extensions = {
@@ -77,38 +107,60 @@ return {
             }
 
             require('telescope').load_extension('fzf')
+            require('telescope').load_extension('harpoon')
 
             vim.keymap.set("n", "<space>fd", function()
-              require('telescope.builtin').find_files({ follow = true })
+                require('telescope.builtin').find_files({ follow = true })
             end)
 
             vim.keymap.set("n", "<space>fg", require('config.telescope_multirg'))
         end,
     },
     -- lsp support
-    { 'neovim/nvim-lspconfig' },
+    {
+        'neovim/nvim-lspconfig',
+        config = function()
+            vim.api.nvim_create_autocmd('LspAttach', {
+                callback = function(args)
+                    local c = vim.lsp.get_client_by_id(args.data.client_id)
+                    if not c then return end
+
+                    if c.supports_method('textDocumet/formatting') then
+                        -- Format the current buffer on save
+                        vim.api.nvim_create_autocmd('BufWritePre', {
+                            buffer = args.buf,
+                            callback = function()
+                                vim.lsp.buf.format({ bufnr = args.buf, id = c.id })
+                            end,
+                        })
+                    end
+                end,
+            })
+        end,
+
+    },
     { 'hrsh7th/cmp-nvim-lsp' },
-{ -- do read the installation section in the readme of nvim-cmp!
-    "hrsh7th/nvim-cmp",
-    main = "cmp",
-    dependencies = { "abeldekat/cmp-mini-snippets" }, -- this plugin
-    event = "InsertEnter",
-    opts = function()
-      local cmp = require("cmp")
-      return {
-        snippet = {
-          expand = function(args) -- mini.snippets expands snippets from lsp...
-            local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
-            insert({ body = args.body }) -- Insert at cursor
-            cmp.resubscribe({ "TextChangedI", "TextChangedP" })
-            require("cmp.config").set_onetime({ sources = {} })
-          end,
-        },
-        sources = cmp.config.sources({ { name = "mini_snippets" } }),
-        mapping = cmp.mapping.preset.insert(), -- more opts...
-      }
-    end,
-  },
+    { -- do read the installation section in the readme of nvim-cmp!
+        "hrsh7th/nvim-cmp",
+        main = "cmp",
+        dependencies = { "abeldekat/cmp-mini-snippets" }, -- this plugin
+        event = "InsertEnter",
+        opts = function()
+            local cmp = require("cmp")
+            return {
+                snippet = {
+                    expand = function(args) -- mini.snippets expands snippets from lsp...
+                        local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
+                        insert({ body = args.body }) -- Insert at cursor
+                        cmp.resubscribe({ "TextChangedI", "TextChangedP" })
+                        require("cmp.config").set_onetime({ sources = {} })
+                    end,
+                },
+                sources = cmp.config.sources({ { name = "mini_snippets" } }),
+                mapping = cmp.mapping.preset.insert(), -- more opts...
+            }
+        end,
+    },
     { 'williamboman/mason.nvim' },
     { 'williamboman/mason-lspconfig.nvim' },
 }
