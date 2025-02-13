@@ -120,6 +120,24 @@ return {
     {
         'neovim/nvim-lspconfig',
         config = function()
+            local lspconfig = require("lspconfig")
+            local util = require("lspconfig.util")
+            local cmp_nvim_lsp = require("cmp_nvim_lsp")
+            local capabilities = cmp_nvim_lsp.default_capabilities()
+            local opts = { noremap = true, silent = true }
+            local on_attach = function(_, bufnr)
+              opts.buffer = bufnr
+              opts.desc = "Show line diagnostics"
+
+              vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+
+              opts.desc = "Show documentation for what is under cursor"
+              vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+            end
+            lspconfig["sourcekit"].setup({
+              capabilities = capabilities,
+              on_attach = on_attach,
+            })
             vim.api.nvim_create_autocmd('LspAttach', {
                 callback = function(args)
                     local c = vim.lsp.get_client_by_id(args.data.client_id)
@@ -149,7 +167,7 @@ return {
             local cmp = require("cmp")
             return {
                 snippet = {
-                    expand = function(args) -- mini.snippets expands snippets from lsp...
+                    expand = function(args)          -- mini.snippets expands snippets from lsp...
                         local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
                         insert({ body = args.body }) -- Insert at cursor
                         cmp.resubscribe({ "TextChangedI", "TextChangedP" })
