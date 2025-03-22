@@ -71,5 +71,13 @@
     {
         "key": "ctrl+shift+y",
         "command": "notebook.cellOutput.copy"
+    },
+    {
+        "key": "ctrl+shift+j shift+a",
+        "command": "jupyter.restartkernelandrunallcells"
+    },
+    {
+        "key": "ctrl+shift+j a",
+        "command": "notebook.cell.executeCellsAbove"
     }
 ]

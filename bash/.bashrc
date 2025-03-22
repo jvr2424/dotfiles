@@ -67,13 +67,18 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 export BASH_SILENCE_DEPRECATION_WARNING=1
 # export JAVA_HOME=$(/usr/libexec/java_home)
 export GIT_EDITOR=nvim
+export VISUAL=nvim
+export EDITOR="$VISUAL"
 
+# VI Mode in bash (use v to enter text in nvim [visual and editor vars above])
+set -o vi
 
 #tmux
 source "$HOME/.scripts/tmux_on_start.sh"
 
 # custom script for opeing git remote and pr
 source "$HOME/.scripts/git_open_remote.sh"
+source "$HOME/.scripts/service_catalog_repo.sh"
 
 alias ocode="fd . ~/Local_Projects --type d | fzf | xargs -I {} code {}"
 alias cdd='cd $(fd . ~/Local_Projects --type d | fzf)'
@@ -90,6 +95,9 @@ alias gitor="get_git_remote_url | xargs open"
 alias gitopr="get_git_pr_search_url | xargs open"
 alias gitobr="get_git_branch_url | xargs open"
 alias gitl="source ~/.scripts/git_log.sh"
+
+alias scpipe="get_service_catalog_pipeline_url | xargs open"
+alias scc="get_service_catalog_container_url | xargs open"
 
 alias ls="ls  --color=auto"
 alias ll="ls -lh --color=auto"
