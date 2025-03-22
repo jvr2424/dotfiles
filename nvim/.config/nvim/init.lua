@@ -41,6 +41,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+    pattern = "*/bash-fc*",
+    command = "set filetype=bash"
+})
+
 --plugins
 -- require("config.base_plugins")
 
@@ -63,6 +68,18 @@ if vim.g.vscode then
     vim.keymap.set("n", "<leader>s", "<cmd>lua require('vscode').action('cSpell.suggestSpellingCorrections')<CR>")
     vim.keymap.set("n", "<leader>gn", "<cmd>lua require('vscode').action('workbench.action.editor.nextChange')<CR>")
     vim.keymap.set("n", "<leader>gp", "<cmd>lua require('vscode').action('workbench.action.editor.previousChange')<CR>")
+
+    -- vscode like harpoon
+    vim.keymap.set("n", "<leader>hx", "<cmd>lua require('vscode').action('workbench.action.pinEditor')<CR>")
+    vim.keymap.set("n", "<leader>hX", "<cmd>lua require('vscode').action('workbench.action.unpinEditor')<CR>")
+    vim.keymap.set("n", "<leader>hj", "<cmd>lua require('vscode').action('workbench.action.openEditorAtIndex1')<CR>")
+    vim.keymap.set("n", "<leader>hk", "<cmd>lua require('vscode').action('workbench.action.openEditorAtIndex2')<CR>")
+    vim.keymap.set("n", "<leader>hl", "<cmd>lua require('vscode').action('workbench.action.openEditorAtIndex3')<CR>")
+    vim.keymap.set("n", "<leader>h;", "<cmd>lua require('vscode').action('workbench.action.openEditorAtIndex4')<CR>")
+
+    -- search for text and files
+    vim.keymap.set("n", "<leader>fg", "<cmd>lua require('vscode').action('workbench.action.findInFiles')<CR>")
+    vim.keymap.set("n", "<leader>fd", "<cmd>lua require('vscode').action('workbench.action.quickOpen')<CR>")
 else
     -- ordinary Neovim
     require("lazy").setup({

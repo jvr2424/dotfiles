@@ -44,4 +44,5 @@
     "cSpell.enabledFileTypes": {
         "*": false
     },
+    "workbench.editor.pinnedTabsOnSeparateRow": true,
 }
