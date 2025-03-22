@@ -9,6 +9,19 @@ function get_git_remote_remove_suffix() {
 
 }
 
+function get_git_repo_name() {
+    local git_remote=$(get_git_remote_remove_suffix)
+    local repo_name="${git_remote##*/}"
+    echo $repo_name
+}
+
+function get_git_org_name() {
+    local git_remote=$(get_git_remote_remove_suffix)
+    local git_org_name="$(basename "$(dirname "$git_remote")")"
+
+    echo $git_org_name
+}
+
 function get_git_branch() {
     local git_branch=$(git branch | grep \* | cut -d ' ' -f2 )
 

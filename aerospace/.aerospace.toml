@@ -79,6 +79,27 @@ on-focus-changed = ['move-mouse window-lazy-center']
 # See: https://nikitabobko.github.io/AeroSpace/commands.html#exec-and-forget
 # alt-enter = 'exec-and-forget open -n /System/Applications/Utilities/Terminal.app'
 
+# alt-n = '''exec-and-forget osascript -e '
+# tell application "iTerm2"
+#     activate
+#     try
+#         -- Use the current session of the first window
+#         tell the first window
+#             tell current session
+#                 write text "source ~/.dotfiles/scripts/.scripts/nvim_anywhere.sh"
+#             end tell
+#         end tell
+#     on error
+#         -- If there's no session available, create a new window
+#         create window with default profile
+#         tell current session of current window
+#             write text "source ~/.dotfiles/scripts/.scripts/nvim_anywhere.sh"
+#         end tell
+#     end try
+# end tell
+# '
+# '''
+
 # See: https://nikitabobko.github.io/AeroSpace/commands.html#layout
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
