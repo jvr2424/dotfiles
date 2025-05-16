@@ -78,7 +78,6 @@ source "$HOME/.scripts/tmux_on_start.sh"
 
 # custom script for opeing git remote and pr
 source "$HOME/.scripts/git_open_remote.sh"
-source "$HOME/.scripts/service_catalog_repo.sh"
 
 alias ocode="fd . ~/Local_Projects --type d | fzf | xargs -I {} code {}"
 alias cdd='cd $(fd . ~/Local_Projects --type d | fzf)'
