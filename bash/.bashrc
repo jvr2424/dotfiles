@@ -102,5 +102,6 @@ alias scc="get_service_catalog_container_url | xargs open"
 alias ls="ls  --color=auto"
 alias ll="ls -lh --color=auto"
 alias lt="ls -lht --color=auto"
+alias cdob="cd /Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents/notes/notes"
 
 . "$HOME/.cargo/env"
