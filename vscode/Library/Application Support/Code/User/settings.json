@@ -53,4 +53,5 @@
     "editor.detectIndentation": true,
     "workbench.editor.pinnedTabsOnSeparateRow": true,
     "rust-analyzer.inlayHints.typeHints.enable": false,
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
 }
