@@ -37,8 +37,8 @@ return {
         event = {
             -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
             -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-            "BufReadPre /Users/joeracaniello/Documents/ObsidianNotes/**.md",
-            "BufNewFile /Users/joeracaniello/Documents/ObsidianNotes/**.md",
+            "BufReadPre /Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents/notes/notes/**.md",
+            "BufNewFile /Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents/notes/notes/**.md",
         },
         dependencies = {
             -- Required.
@@ -50,7 +50,7 @@ return {
             workspaces = {
                 {
                     name = "ObsidianNotes",
-                    path = "/Users/joeracaniello/Documents/ObsidianNotes",
+                    path = "/Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents/notes/notes/",
                 },
             },
 
