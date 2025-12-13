@@ -82,10 +82,12 @@ source "$HOME/.scripts/git_open_remote.sh"
 alias ocode="fd . ~/Local_Projects --type d | fzf | xargs -I {} code {}"
 alias cdd='cd $(fd . ~/Local_Projects --type d | fzf)'
 alias cdc='cdd && code .'
+alias cdt='cd $(git rev-parse --show-toplevel)'
 alias lsm="ls ~/Downloads/*.json -alth | head -n 3"
 alias cpm="source ~/.scripts/copy_model.sh"
 alias cpd="source ~/.scripts/copy_latest_downloads_realpath.sh"
 alias mkvenv="source ~/.scripts/create_venv.sh"
+alias acvenv="source ~/.scripts/activate_venv.sh"
 alias dotgit="git --git-dir=$HOME/dotfiles/ --work-tree=$HOME"
 alias cpsn="source ~/.scripts/copy_schema_name.sh"
 alias awslogin="/opt/homebrew/Cellar/awslogin/2.5.0/bin/awslogin"
