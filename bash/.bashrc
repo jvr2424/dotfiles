@@ -100,9 +100,9 @@ alias gitl="source ~/.scripts/git_log.sh"
 alias scpipe="get_service_catalog_pipeline_url | xargs open"
 alias scc="get_service_catalog_container_url | xargs open"
 
-alias ls="ls  --color=auto"
-alias ll="ls -lh --color=auto"
-alias lt="ls -lht --color=auto"
+alias ls="ls  --color"
+alias ll="ls -lh --color"
+alias lt="ls -lht --color"
 alias cdob="cd /Users/joeracaniello/Documents/ObsidianNotes"
 
 . "$HOME/.cargo/env"
