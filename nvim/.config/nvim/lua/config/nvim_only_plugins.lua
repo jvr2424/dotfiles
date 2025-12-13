@@ -120,42 +120,41 @@ return {
     {
         'neovim/nvim-lspconfig',
         config = function()
-            local lspconfig = require("lspconfig")
-            local util = require("lspconfig.util")
-            local cmp_nvim_lsp = require("cmp_nvim_lsp")
-            local capabilities = cmp_nvim_lsp.default_capabilities()
-            local opts = { noremap = true, silent = true }
-            local on_attach = function(_, bufnr)
-                opts.buffer = bufnr
-                opts.desc = "Show line diagnostics"
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-                vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
-
-                opts.desc = "Show documentation for what is under cursor"
-                vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-            end
-            lspconfig["sourcekit"].setup({
-                capabilities = capabilities,
-                on_attach = on_attach,
-            })
+            -- Set up keymaps on LSP attach
             vim.api.nvim_create_autocmd('LspAttach', {
                 callback = function(args)
-                    local c = vim.lsp.get_client_by_id(args.data.client_id)
-                    if not c then return end
+                    local bufnr = args.buf
+                    local client = vim.lsp.get_client_by_id(args.data.client_id)
+                    if not client then return end
 
-                    if c.supports_method('textDocumet/formatting') then
-                        -- Format the current buffer on save
+                    -- Keymaps
+                    local opts = { noremap = true, silent = true, buffer = bufnr }
+
+                    opts.desc = "Show line diagnostics"
+                    vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+
+                    opts.desc = "Show documentation for what is under cursor"
+                    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+
+                    -- Format on save if supported
+                    if client.supports_method('textDocument/formatting') then
                         vim.api.nvim_create_autocmd('BufWritePre', {
-                            buffer = args.buf,
+                            buffer = bufnr,
                             callback = function()
-                                vim.lsp.buf.format({ bufnr = args.buf, id = c.id })
+                                vim.lsp.buf.format({ bufnr = bufnr, id = client.id })
                             end,
                         })
                     end
                 end,
             })
-        end,
 
+            -- Enable sourcekit LSP
+            vim.lsp.enable('sourcekit', {
+                capabilities = capabilities,
+            })
+        end,
     },
     { 'hrsh7th/cmp-nvim-lsp' },
     { -- do read the installation section in the readme of nvim-cmp!
