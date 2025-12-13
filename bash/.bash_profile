@@ -27,3 +27,5 @@ else
 fi
 
 test -f ~/.bashrc && . ~/.bashrc
+
+. "$HOME/.local/bin/env"

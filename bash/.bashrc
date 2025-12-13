@@ -104,3 +104,5 @@ alias lt="ls -lht --color=auto"
 alias cdob="cd /Users/joeracaniello/Documents/ObsidianNotes"
 
 . "$HOME/.cargo/env"
+
+. "$HOME/.local/bin/env"
