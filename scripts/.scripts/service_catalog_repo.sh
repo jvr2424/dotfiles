@@ -28,7 +28,7 @@ function get_service_catalog_pipeline_url() {
     local tempfile=$(download_service_catalog_data)
 
     # get the pipelines that match the repo and org. sort by most recent and take the first one
-    local jq_res=$(cat $tempfile | jq -c --arg git_org_name "$git_org_name" --arg git_repo_name "$git_repo_name" -r 'sort_by(.lastModified) | reverse | map(.iacs[] | select(( .config.github.org == $git_org_name ) and ( .config.github.repo == $git_repo_name ))) | .[0]')
+    local jq_res=$(cat $tempfile | jq -c --arg git_org_name "$git_org_name" --arg git_repo_name "$git_repo_name" -r ' map(.iacs[] | select(( .config.github.org == $git_org_name ) and ( .config.github.repo == $git_repo_name ))) | sort_by(.lastModified) | reverse | .[0]')
     local sc_pipeline_id=$(echo $jq_res | jq -c  -r '.id')
     local sc_project_id=$(echo $jq_res | jq -c  -r '.ownerProjectId')
 

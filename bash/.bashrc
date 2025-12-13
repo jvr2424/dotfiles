@@ -69,6 +69,9 @@ export JAVA_HOME=$(/usr/libexec/java_home)
 export GIT_EDITOR=nvim
 export VISUAL=nvim
 export EDITOR="$VISUAL"
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # VI Mode in bash (use v to enter text in nvim [visual and editor vars above])
 set -o vi
@@ -80,12 +83,16 @@ source "$HOME/.scripts/tmux_on_start.sh"
 source "$HOME/.scripts/git_open_remote.sh"
 source "$HOME/.scripts/service_catalog_repo.sh"
 
+# claude code
+source "$HOME/.claude.env"
+
 alias ocode="fd . ~/Local_Projects --type d | fzf | xargs -I {} code {}"
 alias cdd='cd $(fd . ~/Local_Projects --type d | fzf)'
 alias cdc='cdd && code .'
 alias cdt='cd $(git rev-parse --show-toplevel)'
 alias lsm="ls ~/Downloads/*.json -alth | head -n 3"
 alias cpm="source ~/.scripts/copy_model.sh"
+alias skom="source ~/.scripts/open_model.sh"
 alias cpd="source ~/.scripts/copy_latest_downloads_realpath.sh"
 alias mkvenv="source ~/.scripts/create_venv.sh"
 alias acvenv="source ~/.scripts/activate_venv.sh"
@@ -108,3 +115,5 @@ alias lt="ls -lht --color=auto"
 alias cdob="cd /Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents/notes/notes"
 
 . "$HOME/.cargo/env"
+
+. "$HOME/.local/bin/env"

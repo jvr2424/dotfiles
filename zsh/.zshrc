@@ -99,3 +99,5 @@ alias ls="ls -alht --color=auto"
 alias ocode="fd . ~/Documents/Projects --type d | fzf | xargs -I {} code {}"
 alias cdd='cd $(fd . ~/Documents/Projects --type d |fzf)'
 alias cdc='cdd && code .'
+
+. "$HOME/.local/bin/env"
