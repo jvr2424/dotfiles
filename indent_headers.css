@@ -3,6 +3,17 @@
 /*   --file-line-width: 75%;   */
 /* } */
 
+/* make pinned tabs smaller */
+.workspace-tab-header:has(.mod-pinned) {
+  /* shrink if pinned */
+  max-width: 60px !important;
+
+  /* also hide the title of pinned tabs */
+  & .workspace-tab-header-inner-title {
+    display: none;
+  }
+}
+
 /* Indent headings v0.3.0
    github.com/zamsyt */
 :root:root .cm-content > div, .markdown-preview-view > * > div {
