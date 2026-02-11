@@ -85,6 +85,7 @@ source "$HOME/.scripts/service_catalog_repo.sh"
 
 # claude code
 source "$HOME/.claude.env"
+alias gcmd="source ~/.scripts/claude_bash_cmd.sh"
 
 alias ocode="fd . ~/Local_Projects --type d | fzf | xargs -I {} code {}"
 alias cdd='cd $(fd . ~/Local_Projects --type d | fzf)'
@@ -108,6 +109,8 @@ alias attic_export="python /Users/jracaniell/Local_Projects/_side_projects/attic
 
 alias scpipe="get_service_catalog_pipeline_url | xargs open"
 alias scc="get_service_catalog_container_url | xargs open"
+
+alias ruff_df="source ~/.scripts/ruff_disable_formatting.sh"
 
 alias ls="ls  --color"
 alias ll="ls -lh --color"
