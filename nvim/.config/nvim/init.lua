@@ -28,6 +28,7 @@ vim.opt.wrap = false
 
 -- keymaps
 require("config.keymaps")
+require("config.nvim_only_keymaps")
 
 -- autocmds
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -135,6 +136,15 @@ else
     --     },
     -- })
     vim.lsp.enable("ty")
+    -- vim.lsp.config("ruff", {
+    -- 	init_options = {
+    -- 		settings = {
+    -- 			-- Ruff language server settings go here
+    -- 		},
+    -- 	},
+    -- })
+
+    vim.lsp.enable("ruff")
 
     -- This is where you enable features that only work
     -- if there is a language server active in the file
