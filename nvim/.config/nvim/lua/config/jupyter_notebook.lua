@@ -17,6 +17,27 @@ return {
     },
 
     {
+        "jmbuhr/otter.nvim",
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+        },
+        opts = {},
+        config = function()
+            -- Setup otter to activate LSP in code blocks
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "markdown",
+                callback = function()
+                    -- Check if this is a jupytext file
+                    local filename = vim.fn.expand("%:t")
+                    if filename:match("%.ipynb$") or vim.b.jupytext then
+                        require("otter").activate({ "python" }, true, true, nil)
+                    end
+                end,
+            })
+        end,
+    },
+
+    {
         "Vigemus/iron.nvim",
         config = true,
         init = function()
