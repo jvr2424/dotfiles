@@ -11,6 +11,8 @@ vim.g.mapleader = " "
 
 vim.g.have_nerd_font = false
 vim.opt.clipboard = "unnamedplus"
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
@@ -25,6 +27,8 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 
 vim.opt.wrap = false
+vim.g.loaded_python3_provider = 0
+vim.o.termguicolors = true
 
 -- keymaps
 require("config.keymaps")

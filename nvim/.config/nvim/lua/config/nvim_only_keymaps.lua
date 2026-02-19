@@ -175,5 +175,3 @@ vim.keymap.set("n", "<leader>qq", function()
         vim.cmd("copen")
     end
 end, vim.tbl_extend("force", opts, { desc = "Toggle quickfix window" }))
-
-print("Quickfix keybinds loaded!")
