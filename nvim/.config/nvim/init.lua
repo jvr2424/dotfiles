@@ -155,6 +155,8 @@ else
 	vim.api.nvim_create_autocmd("LspAttach", {
 		desc = "LSP actions",
 		callback = function(event)
+			vim.diagnostic.config({ virtual_lines = false, virtual_text = true })
+
 			local opts = { buffer = event.buf }
 
 			vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
@@ -169,18 +171,14 @@ else
 			vim.keymap.set({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
 			vim.keymap.set("n", "<F4>", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
 			-- Navigate diagnostics (equivalent to markers/problems)
-			vim.keymap.set("n", "<leader>j", vim.diagnostic.goto_next, opts)
-			vim.keymap.set("n", "<leader>k", vim.diagnostic.goto_prev, opts)
+			vim.keymap.set("n", "<leader>j", function()
+				vim.diagnostic.jump({ count = 1, float = true })
+			end)
+			vim.keymap.set("n", "<leader>k", function()
+				vim.diagnostic.jump({ count = -1, float = true })
+			end)
 			-- Spell suggestions (native Neovim spell checking)
 			vim.keymap.set("n", "<leader>s", "z=", opts)
-			-- Or for a more consistent function call:
-			-- vim.keymap.set("n", "<leader>s", function() vim.cmd("normal! z=") end)
-			-- Navigate changes (requires gitsigns.nvim plugin)
-			-- vim.keymap.set("n", "<leader>gn", "<cmd>Gitsigns next_hunk<CR>")
-			-- vim.keymap.set("n", "<leader>gp", "<cmd>Gitsigns prev_hunk<CR>")
-			-- Or with the gitsigns API:
-			-- vim.keymap.set("n", "<leader>gn", function() require('gitsigns').next_hunk() end)
-			-- vim.keymap.set("n", "<leader>gp", function() require('gitsigns').prev_hunk() end)
 		end,
 	})
 	require("mason").setup({})

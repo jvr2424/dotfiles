@@ -2,14 +2,47 @@
 -- stylua: ignore
 return {
     {
-        "folke/tokyonight.nvim",
-        lazy = false,    -- make sure we load this during startup if it is your main colorscheme
-        priority = 1000, -- make sure to load this before all the other start plugins
+        "rockyzhang24/arctic.nvim",
+        dependencies = { "rktjmp/lush.nvim" },
+        name = "arctic",
+        branch = "main",
+        priority = 1000,
         config = function()
-            -- load the colorscheme here
-            vim.cmd([[colorscheme tokyonight]])
-        end,
+            vim.o.background = "dark"
+            vim.cmd("colorscheme arctic")
+        end
     },
+    -- {
+    --     'sainnhe/everforest',
+    --     lazy = false,
+    --     priority = 1000,
+    --     config = function()
+    --         -- Optionally configure and load the colorscheme
+    --         -- directly inside the plugin declaration.
+    --         vim.o.background = "dark"
+    --         vim.g.everforest_background = 'hard'
+    --         vim.g.everforest_enable_italic = true
+    --         vim.cmd.colorscheme('everforest')
+    --     end
+    -- },
+    -- {
+    --     "EdenEast/nightfox.nvim",
+    --     priority = 1000,
+    --     config = function()
+    --         -- load the colorscheme here
+    --         vim.o.background = "dark"
+    --         vim.cmd([[colorscheme terafox]])
+    --     end,
+    -- },
+    -- {
+    --     "folke/tokyonight.nvim",
+    --     lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+    --     priority = 1000, -- make sure to load this before all the other start plugins
+    --     config = function()
+    --         -- load the colorscheme here
+    --         vim.cmd([[colorscheme tokyonight]])
+    --     end,
+    -- },
     {
         'echasnovski/mini.pairs',
         version = false,
@@ -362,7 +395,69 @@ return {
             vim.keymap.set("n", "<leader>gP", gitsigns.preview_hunk_inline)
             vim.keymap.set("n", "<leader>gd", function() gitsigns.diffthis("~1") end)
             vim.keymap.set("n", "<leader>gq", function() gitsigns.setqflist('all') end)
+            vim.keymap.set('n', '<leader>gr', function()
+                -- Fetch the target branch of the current PR using gh CLI
+                local cmd = "gh pr view --json baseRefName --template '{{.baseRefName}}' 2>/dev/null"
+                local handle = io.popen(cmd)
+                local base_branch = handle:read("*a"):gsub("%s+", "")
+                handle:close()
+
+                if base_branch ~= "" then
+                    -- Use "..." to compare against the merge-base (only shows PR changes)
+                    -- The 'true' argument applies this globally to all open buffers
+                    require('gitsigns').change_base(base_branch, true)
+                    -- set quickfix list with changed files
+
+                    local files = vim.fn.systemlist('gh pr diff --name-only')
+                    local qf_items = {}
+                    for _, file in ipairs(files) do
+                        if file ~= "" then
+                            table.insert(qf_items, { filename = file, lnum = 1 })
+                        end
+                    end
+
+                    -- Replace the current quickfix list with the new items
+                    vim.fn.setqflist(qf_items, 'r')
+                    vim.cmd('copen')
+                    print("Gitsigns base set to: " .. base_branch)
+                else
+                    print("Error: No PR found for the current branch via 'gh' CLI.")
+                end
+            end, { desc = "Gitsigns: Show diff for current PR" })
         end
+    },
+    {
+        'stevearc/oil.nvim',
+        ---@module 'oil'
+        ---@type oil.SetupOpts
+        opts = {},
+        -- Optional dependencies
+        dependencies = { { "nvim-mini/mini.icons", opts = {} } },
+        -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+        -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+        lazy = false,
+    },
+    {
+        "hat0uma/csvview.nvim",
+        ---@module "csvview"
+        ---@type CsvView.Options
+        opts = {
+            parser = { comments = { "#", "//" } },
+            keymaps = {
+                -- Text objects for selecting fields
+                textobject_field_inner = { "if", mode = { "o", "x" } },
+                textobject_field_outer = { "af", mode = { "o", "x" } },
+                -- Excel-like navigation:
+                -- Use <Tab> and <S-Tab> to move horizontally between fields.
+                -- Use <Enter> and <S-Enter> to move vertically between rows and place the cursor at the end of the field.
+                -- Note: In terminals, you may need to enable CSI-u mode to use <S-Tab> and <S-Enter>.
+                jump_next_field_end = { "<Tab>", mode = { "n", "v" } },
+                jump_prev_field_end = { "<S-Tab>", mode = { "n", "v" } },
+                jump_next_row = { "<Enter>", mode = { "n", "v" } },
+                jump_prev_row = { "<S-Enter>", mode = { "n", "v" } },
+            },
+        },
+        cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
     }
 
 }

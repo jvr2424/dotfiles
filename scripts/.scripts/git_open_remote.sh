@@ -1,6 +1,19 @@
 function get_git_remote_url() {
-    local git_remote=$(git remote -v | awk '/origin.*push/ {print $2}' | rg -oP "(?<=git@).+" | sed 's/:/\//g' | xargs echo | (echo -n "https://" && cat))
-    echo "$git_remote"
+    local git_remote=$(git remote -v | awk '/origin.*push/ {print $2}')
+
+    # Check if it's already an HTTP/HTTPS URL
+    if [[ "$git_remote" =~ ^https?:// ]]; then
+        # Ensure it's https
+        git_remote="${git_remote/http:/https:}"
+        echo "$git_remote"
+    elif [[ "$git_remote" =~ ^git@ ]]; then
+        # Convert SSH format (git@host:path) to HTTPS (https://host/path)
+        git_remote=$(echo "$git_remote" | rg -oP "(?<=git@).+" | sed 's/:/\//g')
+        echo "https://$git_remote"
+    else
+        # Unknown format, return as-is
+        echo "$git_remote"
+    fi
 }
 
 function get_git_remote_remove_suffix() {

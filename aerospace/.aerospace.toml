@@ -168,6 +168,9 @@ alt-a = 'move-workspace-to-monitor --wrap-around prev'
 # See: https://nikitabobko.github.io/AeroSpace/commands.html#reload-config
 alt-shift-r = 'reload-config'
 
+# enable or disable aerospace
+# alt-shift-e = 'enable toggle'
+
 # join mode
 alt-shift-slash = 'mode join'
 

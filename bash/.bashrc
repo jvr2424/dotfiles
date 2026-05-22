@@ -10,6 +10,7 @@ LIGHT_RED="\[\033[1;31m\]"
 LIGHT_GREEN="\[\033[1;32m\]"
 WHITE="\[\033[1;37m\]"
 LIGHT_GRAY="\[\033[0;37m\]"
+GRAY="\[\033[90m\]"
 COLOR_NONE="\[\e[0m\]"
 
 function set_virtualenv() {
@@ -22,7 +23,20 @@ function set_virtualenv() {
   fi
 }
 
-
+function get_pr_number() {
+  # Get PR number for current branch if it exists
+  if git rev-parse --git-dir > /dev/null 2>&1; then
+    local branch=$(git branch --show-current 2>/dev/null)
+    if [[ -n "$branch" ]]; then
+      local pr_number=$(gh pr list --head "$branch" --json number --jq '.[0].number' 2>/dev/null)
+      if [[ -n "$pr_number" ]]; then
+        echo " ${GRAY}PR #${pr_number}${COLOR_NONE}"
+        return
+      fi
+    fi
+  fi
+  echo ""
+}
 
 # shows a * for unstaged and + for staged files
 GIT_PS1_SHOWDIRTYSTATE=1
@@ -43,8 +57,10 @@ function set_bash_prompt() {
   # Set the VENV variable.
   set_virtualenv
 
+  # Get PR number if it exists
+  local pr_info=$(get_pr_number)
 
-  export PS1="${VENV}${GREEN}\u\[${YELLOW}\]\w\[${BLUE}\]$(__git_ps1)${COLOR_NONE}\n${PROMPT_SYMBOL} "
+  export PS1="${VENV}${GREEN}\u\[${YELLOW}\]\w\[${BLUE}\]$(__git_ps1)${pr_info}${COLOR_NONE}\n${PROMPT_SYMBOL} "
 }
 
 PROMPT_COMMAND=set_bash_prompt
@@ -120,3 +136,5 @@ alias cdob="cd /Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents
 . "$HOME/.cargo/env"
 
 . "$HOME/.local/bin/env"
+
+export PATH=$HOME/.rill:$PATH # Added by Rill install
