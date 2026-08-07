@@ -101,3 +101,6 @@ alias cdd='cd $(fd . ~/Documents/Projects --type d |fzf)'
 alias cdc='cdd && code .'
 
 . "$HOME/.local/bin/env"
+
+# Added by git-ai installer on Wed Jun 10 13:55:02 EDT 2026
+export PATH="/Users/jracaniell/.git-ai/bin:$PATH"
