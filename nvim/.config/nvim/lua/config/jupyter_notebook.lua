@@ -23,13 +23,11 @@ return {
         },
         opts = {},
         config = function()
-            -- Setup otter to activate LSP in code blocks
+            require("otter").setup()
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = "markdown",
                 callback = function()
-                    -- Check if this is a jupytext file
-                    local filename = vim.fn.expand("%:t")
-                    if filename:match("%.ipynb$") or vim.b.jupytext then
+                    if vim.fn.expand("%:e") == "ipynb" then
                         require("otter").activate({ "python" }, true, true, nil)
                     end
                 end,

@@ -95,6 +95,21 @@ return {
         version = false, -- last release is way too old and doesn't work on Windows
         build = ":TSUpdate",
         -- event = { "LazyFile", "VeryLazy" },
+        config = function()
+            require("nvim-treesitter").setup()
+            local parsers = {
+                "lua", "vim", "markdown", "markdown_inline",
+                "html", "python", "javascript", "css", "bash", "toml", "yaml",
+                "json", "sql",
+            }
+            local installed = require("nvim-treesitter.config").get_installed()
+            local to_install = vim.tbl_filter(function(p)
+                return not vim.tbl_contains(installed, p)
+            end, parsers)
+            if #to_install > 0 then
+                require("nvim-treesitter").install(to_install)
+            end
+        end,
     },
     {
         'ThePrimeagen/harpoon',
@@ -127,10 +142,9 @@ return {
     },
     {
         'nvim-telescope/telescope.nvim',
-        tag = '0.1.8',
         dependencies = {
             'nvim-lua/plenary.nvim',
-            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
         },
         config = function()
             require('telescope').setup {
@@ -158,7 +172,7 @@ return {
                     local c = vim.lsp.get_client_by_id(args.data.client_id)
                     if not c then return end
 
-                    if c.supports_method('textDocumet/formatting') then
+                    if c.supports_method('textDocument/formatting') then
                         -- Format the current buffer on save
                         vim.api.nvim_create_autocmd('BufWritePre', {
                             buffer = args.buf,
@@ -458,6 +472,23 @@ return {
             },
         },
         cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
+    },
+    {
+        'kristijanhusak/vim-dadbod-ui',
+        dependencies = {
+            { 'tpope/vim-dadbod',                     lazy = true },
+            { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }, -- Optional
+        },
+        cmd = {
+            'DBUI',
+            'DBUIToggle',
+            'DBUIAddConnection',
+            'DBUIFindBuffer',
+        },
+        init = function()
+            -- Your DBUI configuration
+            vim.g.db_ui_use_nerd_fonts = 1
+        end,
     }
 
 }

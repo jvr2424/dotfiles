@@ -1,3 +1,12 @@
+-- neovim 0.12 removed vim.F.if_nil and vim.filetype.ft_to_lang; shim for telescope compatibility
+if vim.F == nil then vim.F = {} end
+if vim.F.if_nil == nil then
+    vim.F.if_nil = function(val, default) if val == nil then return default end return val end
+end
+if vim.filetype and vim.filetype.ft_to_lang == nil then
+    vim.filetype.ft_to_lang = function(ft) return vim.treesitter.language.get_lang(ft) end
+end
+
 -- bootstrap lazy.nvim, LazyVim and your plugins
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -168,7 +177,16 @@ else
 			vim.keymap.set("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
 			vim.keymap.set("n", "ge", "<cmd>lua vim.diagnostic.open_float()<cr>", opts)
 			vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
-			vim.keymap.set({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
+			local fmt = function()
+				vim.lsp.buf.format({
+					async = true,
+					filter = function(client)
+						return client.name ~= "ty"
+					end,
+				})
+			end
+			vim.keymap.set({ "n", "x" }, "<F3>", fmt, opts)
+			vim.keymap.set({ "n", "x" }, "<leader>f", fmt, opts)
 			vim.keymap.set("n", "<F4>", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
 			-- Navigate diagnostics (equivalent to markers/problems)
 			vim.keymap.set("n", "<leader>j", function()
@@ -231,36 +249,6 @@ else
 				cmp.resubscribe({ "TextChangedI", "TextChangedP" })
 				require("cmp.config").set_onetime({ sources = {} })
 			end,
-		},
-	})
-
-	require("nvim-treesitter.configs").setup({
-		-- A list of parser names, or "all" (the listed parsers MUST always be installed)
-		ensure_installed = {
-			"lua",
-			"vim",
-			"markdown",
-			"markdown_inline",
-			"html",
-			"python",
-			"javascript",
-			"css",
-			"bash",
-			"toml",
-		},
-
-		sync_install = false,
-		-- Automatically install missing parsers when entering buffer
-		-- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-		auto_install = true,
-
-		highlight = {
-			enable = true,
-			-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-			-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-			-- Using this option may slow down your editor, and you may see some duplicate highlights.
-			-- Instead of true it can also be a list of languages
-			additional_vim_regex_highlighting = false,
 		},
 	})
 end
