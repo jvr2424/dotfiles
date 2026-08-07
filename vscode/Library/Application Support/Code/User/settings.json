@@ -19,8 +19,6 @@
     ],
     "notebook.diff.ignoreOutputs": true,
     "notebook.diff.ignoreMetadata": true,
-    // Enable formatting the entire Notebook on save
-      "notebook.formatOnCellExecution": true,
       // Run the enabled code actions on the entire Notebook on save
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
@@ -32,9 +30,8 @@
     "[javascript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
     },
-    "vscode-neovim.neovimExecutablePaths.darwin": "/Users/jracaniell/.local/share/bob/v0.9.5/bin/nvim",
     "ruff.nativeServer": "on",
-    "python.analysis.nodeExecutable": "/opt/homebrew/bin/node",
+    "python.analysis.nodeExecutable": "/Users/jracaniell/.nvm/versions/node/v24.16.0/bin/node",
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
@@ -46,4 +43,8 @@
     },
     "workbench.editor.pinnedTabsOnSeparateRow": true,
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "chat.useHooks": true,
+    "claudeCode.preferredLocation": "panel",
+    "notebook.formatOnCellExecution": true,
+    "notebook.formatOnSave.enabled": true,
 }

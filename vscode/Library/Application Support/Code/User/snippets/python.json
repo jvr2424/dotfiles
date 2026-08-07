@@ -1,0 +1,19 @@
+{
+    "DuckDB execute": {
+        "prefix": "conn",
+        "body": [
+            "conn.execute('''",
+            "             select * ",
+            "             from ${1:df}",
+            "             ",
+            "             ",
+            "             ''').df()"
+        ],
+        "description": "DuckDB conn.execute query template"
+    },
+    "Pandas display options": {
+        "prefix": "pd.opt",
+        "body": "pd.options.display.$0",
+        "description": "pd.options.display."
+    }
+}
