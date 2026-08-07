@@ -1,4 +1,4 @@
-source "$HOME/.dotfiles/.env"
+[ -f "$HOME/.dotfiles/.env" ] && source "$HOME/.dotfiles/.env"
 
 function download_service_catalog_data() {
     local tempfile=$(mktemp)

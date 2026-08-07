@@ -1,4 +1,4 @@
-source "$HOME/.dotfiles/.env"
+[ -f "$HOME/.dotfiles/.env" ] && source "$HOME/.dotfiles/.env"
 
 function download_fio_data() {
     # platform login
