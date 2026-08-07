@@ -77,11 +77,12 @@ _fzf_compgen_dir() {
 }
 
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export SSL_CERT_FILE=/etc/ssl/certs/ca-bundle-full.crt
 export AWS_CA_BUNDLE=/etc/ssl/certs/ca-bundle-full.crt
 export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle-full.crt
 export BASH_SILENCE_DEPRECATION_WARNING=1
-export JAVA_HOME=$(/usr/libexec/java_home)
 export GIT_EDITOR=nvim
 export VISUAL=nvim
 export EDITOR="$VISUAL"
@@ -100,28 +101,28 @@ source "$HOME/.scripts/git_open_remote.sh"
 source "$HOME/.scripts/service_catalog_repo.sh"
 
 # claude code
-source "$HOME/.claude.env"
+[ -f "$HOME/.claude.env" ] && source "$HOME/.claude.env"
 alias gcmd="source ~/.scripts/claude_bash_cmd.sh"
 
-alias ocode="fd . ~/Local_Projects --type d | fzf | xargs -I {} code {}"
-alias cdd='cd $(fd . ~/Local_Projects --type d | fzf)'
+alias ocode="fd . ~/projects --type d | fzf | xargs -I {} code {}"
+alias cdd='cd $(fd . ~/projects --type d | fzf)'
 alias cdc='cdd && code .'
 alias cdt='cd $(git rev-parse --show-toplevel)'
 alias lsm="ls ~/Downloads/*.json -alth | head -n 3"
 alias cpm="source ~/.scripts/copy_model.sh"
 alias skom="source ~/.scripts/open_model.sh"
 alias cpd="source ~/.scripts/copy_latest_downloads_realpath.sh"
+alias cpp="realpath . | tr -d '\n' | pbcopy"
 alias mkvenv="source ~/.scripts/create_venv.sh"
 alias acvenv="source ~/.scripts/activate_venv.sh"
 alias dotgit="git --git-dir=$HOME/dotfiles/ --work-tree=$HOME"
 alias cpsn="source ~/.scripts/copy_schema_name.sh"
-alias awslogin="/opt/homebrew/Cellar/awslogin/2.5.0/bin/awslogin"
+alias awslogin="/opt/homebrew/Cellar/awslogin/2.7.0/bin/awslogin"
 alias awslf="source ~/.scripts/awslogin_helper.sh"
 alias gitor="get_git_remote_url | xargs open"
 alias gitopr="get_git_pr_search_url | xargs open"
 alias gitobr="get_git_branch_url | xargs open"
 alias gitl="source ~/.scripts/git_log.sh"
-alias attic_export="python /Users/jracaniell/Local_Projects/_side_projects/attic_export_cli/run_attic_export.py"
 
 alias scpipe="get_service_catalog_pipeline_url | xargs open"
 alias scc="get_service_catalog_container_url | xargs open"
@@ -133,8 +134,11 @@ alias ll="ls -lh --color"
 alias lt="ls -lht --color"
 alias cdob="cd /Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents/notes/notes"
 
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env" || export PATH="$HOME/.cargo/bin:$PATH"
 
-. "$HOME/.local/bin/env"
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
 export PATH=$HOME/.rill:$PATH # Added by Rill install
+
+# Added by git-ai installer on Wed Jun 10 13:55:02 EDT 2026
+export PATH="/Users/jracaniell/.git-ai/bin:$PATH"
