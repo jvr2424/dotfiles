@@ -93,6 +93,9 @@ export NVM_DIR="$HOME/.nvm"
 # VI Mode in bash (use v to enter text in nvim [visual and editor vars above])
 set -o vi
 
+# dotfiles-managed environment (PROJECTS_DIR, OBSIDIAN_DIR, etc.)
+[ -f "$HOME/.dotfiles/.env" ] && . "$HOME/.dotfiles/.env"
+
 #tmux
 source "$HOME/.scripts/tmux_on_start.sh"
 
@@ -104,8 +107,8 @@ source "$HOME/.scripts/service_catalog_repo.sh"
 [ -f "$HOME/.claude.env" ] && source "$HOME/.claude.env"
 alias gcmd="source ~/.scripts/claude_bash_cmd.sh"
 
-alias ocode="fd . ~/projects --type d | fzf | xargs -I {} code {}"
-alias cdd='cd $(fd . ~/projects --type d | fzf)'
+alias ocode="fd . \"$PROJECTS_DIR\" --type d | fzf | xargs -I {} code {}"
+alias cdd='cd $(fd . "$PROJECTS_DIR" --type d | fzf)'
 alias cdc='cdd && code .'
 alias cdt='cd $(git rev-parse --show-toplevel)'
 alias lsm="ls ~/Downloads/*.json -alth | head -n 3"
@@ -132,7 +135,7 @@ alias ruff_df="source ~/.scripts/ruff_disable_formatting.sh"
 alias ls="ls  --color"
 alias ll="ls -lh --color"
 alias lt="ls -lht --color"
-alias cdob="cd /Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents/notes/notes"
+alias cdob='cd "$OBSIDIAN_DIR"'
 
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env" || export PATH="$HOME/.cargo/bin:$PATH"
 
@@ -141,4 +144,4 @@ alias cdob="cd /Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents
 export PATH=$HOME/.rill:$PATH # Added by Rill install
 
 # Added by git-ai installer on Wed Jun 10 13:55:02 EDT 2026
-export PATH="/Users/jracaniell/.git-ai/bin:$PATH"
+export PATH="$HOME/.git-ai/bin:$PATH"

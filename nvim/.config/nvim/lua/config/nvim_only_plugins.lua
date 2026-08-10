@@ -67,12 +67,16 @@ return {
         lazy = true,
         -- ft = "markdown",
         -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-        event = {
-            -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-            -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-            "BufReadPre /Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents/notes/notes/**.md",
-            "BufNewFile /Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents/notes/notes/**.md",
-        },
+        event = (function()
+            local obsidian_dir = os.getenv("OBSIDIAN_DIR")
+            if not obsidian_dir then
+                return {}
+            end
+            return {
+                "BufReadPre " .. obsidian_dir .. "/**.md",
+                "BufNewFile " .. obsidian_dir .. "/**.md",
+            }
+        end)(),
         dependencies = {
             -- Required.
             "nvim-lua/plenary.nvim",
@@ -83,7 +87,7 @@ return {
             workspaces = {
                 {
                     name = "ObsidianNotes",
-                    path = "/Users/jracaniell/Library/CloudStorage/OneDrive-FactSet/Documents/notes/notes/",
+                    path = os.getenv("OBSIDIAN_DIR") or "",
                 },
             },
 

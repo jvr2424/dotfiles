@@ -74,6 +74,9 @@ _fzf_compgen_dir() {
 #fzf
 source <(fzf --zsh)
 
+# dotfiles-managed environment (PROJECTS_DIR, OBSIDIAN_DIR, etc.)
+[ -f "$HOME/.dotfiles/.env" ] && . "$HOME/.dotfiles/.env"
+
 export NVM_DIR="$HOME/.reflex/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -84,23 +87,23 @@ autoload -Uz compinit && compinit
 fpath=(~/.zsh $fpath)
 
 # bun completions
-[ -s "/Users/joeracaniello/.reflex/.bun/_bun" ] && source "/Users/joeracaniello/.reflex/.bun/_bun"
+[ -s "$HOME/.reflex/.bun/_bun" ] && source "$HOME/.reflex/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.reflex/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 #tmux
-source "/Users/joeracaniello/.scripts/tmux_on_start.sh"
+source "$HOME/.scripts/tmux_on_start.sh"
 
 #aliases
 alias dotgit="git --git-dir=$HOME/dotfiles/ --work-tree=$HOME"
 alias ls="ls -alht --color=auto"
-alias ocode="fd . ~/Documents/Projects --type d | fzf | xargs -I {} code {}"
-alias cdd='cd $(fd . ~/Documents/Projects --type d |fzf)'
+alias ocode="fd . \"$PROJECTS_DIR\" --type d | fzf | xargs -I {} code {}"
+alias cdd='cd $(fd . "$PROJECTS_DIR" --type d | fzf)'
 alias cdc='cdd && code .'
 
 . "$HOME/.local/bin/env"
 
 # Added by git-ai installer on Wed Jun 10 13:55:02 EDT 2026
-export PATH="/Users/jracaniell/.git-ai/bin:$PATH"
+export PATH="$HOME/.git-ai/bin:$PATH"

@@ -1,7 +1,7 @@
 
 #!/usr/bin/env bash
 
-selected_path=$(fd . ~/projects --type d | fzf)
+selected_path=$(fd . "$PROJECTS_DIR" --type d | fzf)
 session_name=$(basename "$selected_path")
 
 tmux new -s  "$session_name" -d  #"$SHELL -c '$selected_path && exec $SHELL -l'"
