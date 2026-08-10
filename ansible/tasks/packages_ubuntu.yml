@@ -1,0 +1,89 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: Install apt packages
+  apt:
+    name: "{{ apt_packages + ['fd-find'] }}"
+    state: present
+  become: true
+
+- name: Ensure ~/.local/bin exists
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Symlink fd-find binary as fd
+  file:
+    src: /usr/bin/fdfind
+    dest: "{{ lookup('env', 'HOME') }}/.local/bin/fd"
+    state: link
+
+- name: Get dpkg architecture
+  command: dpkg --print-architecture
+  register: dpkg_arch
+  changed_when: false
+
+- name: Add GitHub CLI apt signing key
+  get_url:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    dest: /usr/share/keyrings/githubcli-archive-keyring.gpg
+    mode: "0644"
+  become: true
+
+- name: Add GitHub CLI apt repository
+  apt_repository:
+    repo: "deb [arch={{ dpkg_arch.stdout }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+    filename: github-cli
+    state: present
+  become: true
+
+- name: Install gh
+  apt:
+    name: gh
+    state: present
+    update_cache: true
+  become: true
+
+- name: Download DuckDB CLI archive
+  get_url:
+    url: "{{ duckdb_url }}"
+    dest: /tmp/duckdb_cli.zip
+    mode: "0644"
+
+- name: Extract DuckDB CLI to ~/.local/bin
+  unarchive:
+    src: /tmp/duckdb_cli.zip
+    dest: "{{ lookup('env', 'HOME') }}/.local/bin"
+    remote_src: true
+    mode: "0755"
+
+- name: Install Neovim and ruff via shared toolchains
+  environment:
+    PATH: "{{ lookup('env', 'HOME') }}/.cargo/bin:{{ lookup('env', 'HOME') }}/.local/bin:{{ ansible_facts['env']['PATH'] }}"
+  block:
+    - name: Install stable Neovim via bob
+      command: bob install stable
+      changed_when: false
+
+    - name: Set stable as the active bob-managed Neovim
+      command: bob use stable
+      changed_when: false
+
+    - name: Check for uv
+      command: which uv
+      register: uv_check
+      changed_when: false
+      failed_when: false
+
+    - name: Install uv
+      shell: curl -LsSf https://astral.sh/uv/install.sh | sh
+      when: uv_check.rc != 0
+
+    - name: Install ruff via uv
+      command: uv tool install ruff
+      changed_when: false

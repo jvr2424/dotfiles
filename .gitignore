@@ -3,3 +3,5 @@ ssh_hosts.txt
 .DS_Store
 .env
 vscode/Library/Application Support/Code/
+ansible/inventory.ini
+ansible/host_vars/*.yml

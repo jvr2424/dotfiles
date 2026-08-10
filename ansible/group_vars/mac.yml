@@ -1,0 +1,8 @@
+---
+# Additional Stow packages applied only on Macs.
+stow_packages_mac:
+  - aerospace
+  - iterm2
+  - vscode
+
+brewfile_path: "{{ dotfiles_dir }}/Brewfile"

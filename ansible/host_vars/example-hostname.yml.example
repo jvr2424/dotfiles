@@ -1,0 +1,12 @@
+---
+# Copy this file to ansible/host_vars/<hostname>.yml (gitignored), where
+# <hostname> exactly matches the alias you gave this machine in
+# ansible/inventory.ini (run `hostname -s` to get it). Only machines that
+# need to override a group_vars/all.yml default need a file here at all.
+#
+# Example: the one Mac that still needs Python 3.12 as its global default
+# (everything else defaults to 3.14, set in group_vars/all.yml) also needs
+# 3.9 installed (but not pinned) for older per-project virtualenvs:
+python_default_version: "3.12"
+python_extra_versions:
+  - "3.9"

@@ -1,0 +1,13 @@
+---
+- name: Compute effective Stow package list for this host
+  set_fact:
+    effective_stow_packages: "{{ stow_packages + (stow_packages_mac if ansible_facts['os_family'] == 'Darwin' else []) }}"
+  tags: [stow]
+
+- name: Restow dotfile packages
+  command: stow -R {{ item }}
+  args:
+    chdir: "{{ dotfiles_dir }}"
+  loop: "{{ effective_stow_packages }}"
+  changed_when: false
+  tags: [stow]

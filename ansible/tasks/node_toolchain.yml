@@ -1,0 +1,34 @@
+---
+- name: Ensure nvm is installed and Node LTS is set as default
+  shell: |
+    set -e
+    export NVM_DIR="$HOME/.nvm"
+    NVM_BREW_SH="$(brew --prefix 2>/dev/null || echo /nonexistent)/opt/nvm/nvm.sh"
+    if [ -s "$NVM_BREW_SH" ]; then
+      . "$NVM_BREW_SH"
+    elif [ -s "$NVM_DIR/nvm.sh" ]; then
+      . "$NVM_DIR/nvm.sh"
+    else
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+      . "$NVM_DIR/nvm.sh"
+    fi
+
+    # Skip LTS re-resolution entirely once a default Node version is already
+    # set up: avoids re-hitting the flaky remote-resolution path on re-runs.
+    if [ "$(nvm current 2>/dev/null)" != "none" ] && [ -n "$(nvm current 2>/dev/null)" ]; then
+      exit 0
+    fi
+
+    attempt=1
+    max_attempts=5
+    until nvm install --lts && nvm alias default 'lts/*'; do
+      if [ "$attempt" -ge "$max_attempts" ]; then
+        echo "nvm failed to resolve an LTS version after $max_attempts attempts" >&2
+        exit 1
+      fi
+      attempt=$((attempt + 1))
+      sleep 5
+    done
+  args:
+    executable: /bin/bash
+  changed_when: false

@@ -1,0 +1,30 @@
+---
+- name: Manage Rust toolchain
+  environment:
+    PATH: "{{ lookup('env', 'HOME') }}/.cargo/bin:{{ lookup('env', 'HOME') }}/.local/bin:{{ ansible_facts['env']['PATH'] }}"
+  block:
+    - name: Check for rustup
+      command: which rustup
+      register: rustup_check
+      changed_when: false
+      failed_when: false
+
+    - name: Install rustup
+      shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      when: rustup_check.rc != 0
+
+    - name: Install stable Rust toolchain
+      command: rustup toolchain install stable
+      changed_when: false
+
+    - name: Set stable as default Rust toolchain
+      command: rustup default stable
+      changed_when: false
+
+    - name: Install tree-sitter-cli
+      command: cargo install tree-sitter-cli
+      changed_when: false
+
+    - name: Install bob-nvim (Neovim version manager)
+      command: cargo install bob-nvim
+      changed_when: false

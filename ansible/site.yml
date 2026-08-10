@@ -1,0 +1,44 @@
+---
+- name: Converge dotfiles + packages on this machine
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    # Order matters: packages_mac installs uv (via Brewfile) before
+    # python_toolchain needs it; rust_toolchain installs the bob-nvim
+    # binary before packages_ubuntu uses it to install Neovim.
+    - name: Install macOS packages (Homebrew + Brewfile)
+      include_tasks: tasks/packages_mac.yml
+      when: ansible_facts['os_family'] == 'Darwin'
+      tags: [packages, mac]
+
+    - name: Install shared Rust toolchain
+      include_tasks: tasks/rust_toolchain.yml
+      tags: [packages, rust]
+
+    - name: Install Ubuntu packages (apt)
+      include_tasks: tasks/packages_ubuntu.yml
+      when: ansible_facts['os_family'] == 'Debian'
+      tags: [packages, ubuntu]
+
+    - name: Install shared Node toolchain
+      include_tasks: tasks/node_toolchain.yml
+      tags: [packages, node]
+
+    - name: Install shared Python toolchain
+      include_tasks: tasks/python_toolchain.yml
+      tags: [packages, python]
+
+    - name: Stow dotfiles
+      include_tasks: tasks/stow.yml
+      tags: [stow]
+
+    - name: Apply macOS system settings
+      include_tasks: tasks/macos_settings.yml
+      when: ansible_facts['os_family'] == 'Darwin'
+      tags: [mac, macos-settings]
+
+    - name: Symlink Obsidian files
+      include_tasks: tasks/obsidian.yml
+      when: ansible_facts['os_family'] == 'Darwin'
+      tags: [mac, obsidian]

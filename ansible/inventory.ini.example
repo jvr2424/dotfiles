@@ -1,0 +1,19 @@
+# Copy this file to ansible/inventory.ini (gitignored) and fill in your
+# machines' real hostnames — hostnames aren't checked into version control.
+#
+# All hosts run the playbook against themselves (ansible_connection=local).
+# Real runs always pass --limit "$(hostname -s)" (install.sh does this for
+# you) so a run on one machine never touches another host's tasks.
+#
+# Run `hostname -s` on each machine to get the alias to use below. Any host
+# that needs its own variable overrides (e.g. a different default Python
+# version) also needs a matching ansible/host_vars/<hostname>.yml — see
+# ansible/host_vars/example-hostname.yml.example.
+
+[mac]
+mac-one-hostname ansible_connection=local
+mac-two-hostname ansible_connection=local
+
+[ubuntu]
+ubuntu-one-hostname ansible_connection=local
+ubuntu-two-hostname ansible_connection=local

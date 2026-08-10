@@ -1,0 +1,27 @@
+---
+- name: Manage Python toolchain via uv
+  environment:
+    PATH: "{{ lookup('env', 'HOME') }}/.local/bin:{{ lookup('env', 'HOME') }}/.cargo/bin:{{ ansible_facts['env']['PATH'] }}"
+  block:
+    - name: Check for uv
+      command: which uv
+      register: uv_check
+      changed_when: false
+      failed_when: false
+
+    - name: Install uv
+      shell: curl -LsSf https://astral.sh/uv/install.sh | sh
+      when: uv_check.rc != 0
+
+    - name: Install pinned Python version
+      command: uv python install {{ python_default_version }}
+      changed_when: false
+
+    - name: Install extra (unpinned) Python versions
+      command: uv python install {{ item }}
+      loop: "{{ python_extra_versions }}"
+      changed_when: false
+
+    - name: Pin global default Python version
+      command: uv python pin --global {{ python_default_version }}
+      changed_when: false

@@ -26,7 +26,10 @@ brew "uv"
 brew "duckdb"
 
 # Fonts
-cask "font-roboto-mono-nerd-font"
+# force: true — this font was previously installed outside Homebrew, so the
+# files on disk don't match the cask's checksum and brew refuses to adopt
+# them by default; force tells it to overwrite with the cask-managed copy.
+cask "font-roboto-mono-nerd-font", args: { force: true }
 
 # Applications
 cask "aerospace"

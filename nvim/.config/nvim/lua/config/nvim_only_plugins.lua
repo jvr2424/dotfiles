@@ -92,6 +92,7 @@ return {
     },
     {
         "nvim-treesitter/nvim-treesitter",
+        branch = "main", -- config below uses the rewritten API, only on main (not master)
         version = false, -- last release is way too old and doesn't work on Windows
         build = ":TSUpdate",
         -- event = { "LazyFile", "VeryLazy" },

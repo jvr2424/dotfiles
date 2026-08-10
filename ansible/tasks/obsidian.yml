@@ -1,0 +1,34 @@
+---
+- name: Read OBSIDIAN_DIR from .env
+  shell: set -a; [ -f "{{ dotfiles_dir }}/.env" ] && . "{{ dotfiles_dir }}/.env"; echo "$OBSIDIAN_DIR"
+  args:
+    executable: /bin/bash
+  register: obsidian_dir_result
+  changed_when: false
+
+- name: Warn if OBSIDIAN_DIR is not set
+  debug:
+    msg: "OBSIDIAN_DIR not set in {{ dotfiles_dir }}/.env — skipping Obsidian symlinks. Copy .env.example to .env and fill it in if this machine uses Obsidian."
+  when: obsidian_dir_result.stdout | trim == ''
+
+- name: Ensure Obsidian snippets directory exists
+  file:
+    path: "{{ obsidian_dir_result.stdout | trim }}/.obsidian/snippets"
+    state: directory
+  when: obsidian_dir_result.stdout | trim != ''
+
+- name: Symlink indent_headers.css into Obsidian snippets
+  file:
+    src: "{{ dotfiles_dir }}/indent_headers.css"
+    dest: "{{ obsidian_dir_result.stdout | trim }}/.obsidian/snippets/indent_headers.css"
+    state: link
+    force: true
+  when: obsidian_dir_result.stdout | trim != ''
+
+- name: Symlink .obsidian.vimrc into Obsidian vault
+  file:
+    src: "{{ dotfiles_dir }}/.obsidian.vimrc"
+    dest: "{{ obsidian_dir_result.stdout | trim }}/.obsidian.vimrc"
+    state: link
+    force: true
+  when: obsidian_dir_result.stdout | trim != ''

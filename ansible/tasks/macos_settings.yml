@@ -1,0 +1,12 @@
+---
+- name: Set key repeat rate
+  command: defaults write NSGlobalDomain KeyRepeat -int 2
+  changed_when: false
+
+- name: Set initial key repeat delay
+  command: defaults write NSGlobalDomain InitialKeyRepeat -int 15
+  changed_when: false
+
+- name: Set iTerm2 default profile
+  command: defaults write com.googlecode.iterm2 "Default Bookmark Guid" "DA7FD4F2-24FF-4BAC-90EA-5AC443F9CF02"
+  changed_when: false
