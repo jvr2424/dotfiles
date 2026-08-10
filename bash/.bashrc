@@ -78,10 +78,14 @@ _fzf_compgen_dir() {
 
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export SSL_CERT_FILE=/etc/ssl/certs/ca-bundle-full.crt
-export AWS_CA_BUNDLE=/etc/ssl/certs/ca-bundle-full.crt
-export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle-full.crt
+export PATH="$HOME/.local/share/bob/nvim-bin:$HOME/.local/bin:$PATH"
+if [[ -r /etc/ssl/certs/ca-bundle-full.crt ]]; then
+  export SSL_CERT_FILE=/etc/ssl/certs/ca-bundle-full.crt
+  export AWS_CA_BUNDLE=/etc/ssl/certs/ca-bundle-full.crt
+  export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle-full.crt
+else
+  unset SSL_CERT_FILE AWS_CA_BUNDLE REQUESTS_CA_BUNDLE
+fi
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export GIT_EDITOR=nvim
 export VISUAL=nvim
@@ -145,3 +149,4 @@ export PATH=$HOME/.rill:$PATH # Added by Rill install
 
 # Added by git-ai installer on Wed Jun 10 13:55:02 EDT 2026
 export PATH="$HOME/.git-ai/bin:$PATH"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

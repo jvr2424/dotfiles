@@ -13,6 +13,12 @@ source "$ENV_FILE"
 set +a
 
 for var in PROJECTS_DIR OBSIDIAN_DIR; do
-    value="${!var}"
-    [ -n "$value" ] && tmux set-environment -g "$var" "$value"
+    value="${!var:-}"
+    if [ -n "$value" ]; then
+        tmux set-environment -g "$var" "$value"
+    else
+        tmux set-environment -gu "$var" 2>/dev/null || true
+    fi
 done
+
+exit 0
