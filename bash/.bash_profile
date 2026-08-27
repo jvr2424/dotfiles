@@ -34,4 +34,4 @@ fi
 test -f ~/.bashrc && . ~/.bashrc
 
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"

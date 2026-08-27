@@ -38,6 +38,9 @@ function get_pr_number() {
   echo ""
 }
 
+# Load __git_ps1
+[ -f /opt/homebrew/etc/bash_completion.d/git-prompt.sh ] && source /opt/homebrew/etc/bash_completion.d/git-prompt.sh
+
 # shows a * for unstaged and + for staged files
 GIT_PS1_SHOWDIRTYSTATE=1
 
@@ -86,6 +89,8 @@ if [[ -r /etc/ssl/certs/ca-bundle-full.crt ]]; then
 else
   unset SSL_CERT_FILE AWS_CA_BUNDLE REQUESTS_CA_BUNDLE
 fi
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export GIT_EDITOR=nvim
 export VISUAL=nvim

@@ -117,6 +117,19 @@ return {
         end,
     },
     {
+        "amas0/stan.nvim",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        ft = "stan",
+        config = function()
+            -- nvim-treesitter main branch no longer manages highlighting;
+            -- must enable it manually per filetype
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "stan",
+                callback = function() vim.treesitter.start() end,
+            })
+        end,
+    },
+    {
         'ThePrimeagen/harpoon',
         version = false,
         config = function()
